@@ -1,0 +1,78 @@
+public class CongressionalDebater {
+    //Field Variables
+    private String first, last, name;
+    private int precedence, recency;
+    
+    //Constructors
+    /**
+     * Instantiates a new CongressionalDebater with a defined first name, last name,
+     * and precedence and recency initialized to 0.
+     * @param first First name of the CongressionalDebater
+     * @param last Last name of the CongressionalDebater
+     */
+    public CongressionalDebater(String first, String last) {
+	    setCongressionalDebater(first, last);
+	    precedence = 0;
+	    recency = 0;
+    }
+    
+    //Mutators
+    //Coverall Mutator
+    /**
+     * Sets the first and last name of a CongressionalDebater
+     * @param first First name of the CongressionalDebater
+     * @param last Last name of the CongressionalDebater
+     */
+    public void setCongressionalDebater(String first, String last) {
+	    setFirst(first);
+	    setLast(last);
+	    setName(last);
+    }
+    
+    //Individual Mutators
+    public void setFirst(String first) {
+	    this.first = first;
+    }
+    
+    public void setLast(String last) {
+	    this.last = last;
+    }
+    
+    public void setRecency(int recency) {
+	    this.recency = recency;
+    }
+    
+    public void setPrecedence(int precedence) {
+	    this.precedence = precedence;
+    }
+    
+    public void setName(String name) {
+	    this.name = name;
+    }
+    
+    //Accessors
+    public String getFirst() {
+	    return first;
+    }
+    
+    public String getLast() {
+	    return last;
+    }
+    
+    public int getPrecedence() {
+	    return precedence;
+    }
+    
+    public int getRecency() {
+	    return recency;
+    }
+    
+    public String getName() {
+	    return name;
+    }
+    
+    //toString
+    public String toString() {
+	    return last;
+    }
+}
