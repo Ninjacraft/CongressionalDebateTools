@@ -1,0 +1,36 @@
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
+public class Main {
+    public static void main(String[] args) {
+	    Chart q = new Chart("Questioner Chart");
+	    Chart s = new Chart("Speaker Chart");
+	    q.setLocation(s.getWidth(), 0);
+	    q.addComponentListener(new ComponentListener() {
+	        @Override
+	        public void componentMoved(ComponentEvent e) {
+		        if(e.getSource().equals(s))
+		            q.setLocation(s.getX()+s.getWidth(), s.getY());
+		        if(e.getSource().equals(q))
+		            s.setLocation(q.getX()-s.getWidth(), q.getY());
+	        }
+	    
+	        public void componentResized(ComponentEvent e) {}
+	        public void componentShown(ComponentEvent e) {}
+	        public void componentHidden(ComponentEvent e) {}
+	    });
+	    s.addComponentListener(new ComponentListener() {
+	        @Override
+	        public void componentMoved(ComponentEvent e) {
+		        if(e.getSource().equals(s))
+		            q.setLocation(s.getX()+s.getWidth(), s.getY());
+		        if(e.getSource().equals(q))
+		            s.setLocation(q.getX()-s.getWidth(), q.getY());
+	        }
+	    
+	        public void componentResized(ComponentEvent e) {}
+	        public void componentShown(ComponentEvent e) {}
+	        public void componentHidden(ComponentEvent e) {}
+	    });
+    }
+}
