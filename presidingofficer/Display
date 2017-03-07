@@ -1,7 +1,7 @@
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-public class Main {
+public class Display {
     public static void main(String[] args) {
 	    Chart q = new Chart("Questioner Chart");
 	    Chart s = new Chart("Speaker Chart");
