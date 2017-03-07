@@ -1,0 +1,126 @@
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JFrame;
+
+import congress.CongressionalDebater;
+
+public class Chart extends JFrame {
+    private ArrayList<CongressionalDebater> recency;
+    private ArrayList<ArrayList<CongressionalDebater>> recencies; 
+    private DefaultListModel<CongressionalDebater> list;
+    private JList<CongressionalDebater> chart;
+    private JButton reset;
+    
+    private int getMaxPrecedence() {
+	    int max = -1;
+	    for(int i = 0; i < recency.size(); i++) 
+	        if(recency.get(i).getPrecedence() > max) 
+		        max = recency.get(i).getPrecedence();
+	    return max;
+    }
+    
+    private void organizeList() {
+	    list.clear();
+	    for(int i = 0; i <= getMaxPrecedence(); i++)
+	        for(int j = 0; j < recency.size(); j++)
+		        if(recency.get(j).getPrecedence() == i)
+		            list.addElement(recency.get(j));
+    }
+    
+    private void speak(int i) {
+	    int index = recency.indexOf(list.getElementAt(i));
+	    recencies.add(recency);
+	    recency.get(index).setPrecedence(recency.get(index).getPrecedence() + 1);
+	    recency.get(index).setLast(recency.get(index).getName() + " (" + recency.get(index).getPrecedence() + ")");
+	    recency.add(recency.remove(index));
+	    organizeList();
+    }
+    
+    private void undoSpeak() {
+	    int index = recency.size() - 1;
+	    recency.get(index).setPrecedence(recency.get(index).getPrecedence() - 1);
+	    recency.get(index).setLast(recency.get(index).getName() + " (" + recency.get(index).getPrecedence() + ")");
+	    recency = recencies.get(recencies.size() - 1);
+	    recencies.remove(recencies.size() - 1);
+	    organizeList();
+    }
+    
+    private int maxStringLength() {
+	    int max = -1;
+	    for(int i = 0; i < recency.size(); i++)
+	    if(recency.get(i).getLast().length() > max) 
+		    max = recency.get(i).getLast().length();
+	    return max;
+    }
+    
+    public Chart(String title) {
+	    super(title);
+	    recency = new ArrayList<CongressionalDebater>();
+	    recencies = new ArrayList<ArrayList<CongressionalDebater>>();
+	    list = new DefaultListModel<CongressionalDebater>();
+	    recency.add(new CongressionalDebater("", "Test1"));
+	    recency.add(new CongressionalDebater("", "Test2"));
+	    recency.add(new CongressionalDebater("", "Test3"));
+	    recency.add(new CongressionalDebater("", "Test4"));
+	    recency.add(new CongressionalDebater("", "Test5"));
+	    recency.add(new CongressionalDebater("", "Test6"));
+	    recency.add(new CongressionalDebater("", "Test7"));
+	    recency.add(new CongressionalDebater("", "Test8"));
+	    for(CongressionalDebater c : recency)
+	        list.addElement(c);
+	    chart = new JList<CongressionalDebater>(list);
+	    chart.addMouseListener(new MouseAdapter() {
+	        @Override
+	        public void mouseClicked(MouseEvent e) {
+	            if(e.getClickCount() == 1)
+	                speak(chart.locationToIndex(e.getPoint()));
+	        }
+	    });
+    
+	    chart.addKeyListener(new KeyListener() {
+	        @Override
+	        public void keyPressed(KeyEvent e) {
+	    	    if(e.getKeyCode() == KeyEvent.VK_Z)
+	    	        undoSpeak();
+	        }
+	    
+	        //Do-Nothing Methods
+	        public void keyReleased(KeyEvent e) {}
+	        public void keyTyped(KeyEvent e) {}
+	    });
+	    chart.setFont(new Font("SansSerif", Font.PLAIN, 30));
+	
+	    reset = new JButton("Reset Chart");
+	    reset.addActionListener(new ActionListener() {
+	        @Override
+	        public void actionPerformed(ActionEvent e) {
+	    	    new Chart(title).setLocation(getLocation());
+	    	    dispose();
+	        }
+	    });
+	
+	    setLayout(new GridLayout());
+	
+	    add(chart);
+	    chart.setFocusable(true);
+	    add(reset);
+	
+        getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.RED));
+	    setSize(maxStringLength() * 60, recency.size() * 50 + reset.getWidth());
+	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    setVisible(true);
+    }
+}
